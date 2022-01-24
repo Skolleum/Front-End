@@ -16,11 +16,11 @@
   -   Market Page
   -   Additional bottom navigation pages. (may change in future)
  
--  [] DrawerNav:
-  - [] Profile Page
-  - [] About us 
-  - [] Change currency
-  - [] Other Settings  
+-  [ ] DrawerNav:
+     -    Profile Page
+      -    About us 
+      -    Change currency
+      -    Other Settings  
  
 
 
