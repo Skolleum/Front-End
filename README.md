@@ -11,10 +11,10 @@
 - [x] Login, Register Pages (FlutterFire Auth)
 - [x] Login, Logout Persistency 
 - [ ] BottomNav:
-  - []  Home Page (List of latest market prices.)
-    -[] Japanese CandleStick Graphs 
-  - []  Market Page
-  - []  Additional bottom navigation pages. (may change in future)
+  -   Home Page (List of latest market prices.)
+    -   Japanese CandleStick Graphs 
+  -   Market Page
+  -   Additional bottom navigation pages. (may change in future)
  
 -  [] DrawerNav:
   - [] Profile Page
