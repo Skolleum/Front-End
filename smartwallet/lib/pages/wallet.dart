@@ -40,7 +40,7 @@ class _WalletPageState extends State<WalletPage> {
   /// This will construct [credentials] with the provided [privateKey]
   /// and load the Ethereum address in [myAdderess] specified by these credentials.
   String privateKey =
-      '4bc305a91dd10d8580eef8dbd6a1d10eb3a9060bfd3bdd7f072dd5a12eb7bd81';
+      '473c356fa5b92a0a9e08b55cf3f4b855818da1d1d25abacef36d31409b928ec0';
   Credentials credentials;
   EthereumAddress myAddress;
 
@@ -61,6 +61,8 @@ class _WalletPageState extends State<WalletPage> {
 
     contractAddress =
         EthereumAddress.fromHex(abiJson['networks']['5777']['address']);
+
+    print(contractAddress);
   }
 
   /// This will help us to find all the [public functions] defined by the [contract]
@@ -91,6 +93,8 @@ class _WalletPageState extends State<WalletPage> {
       function: functionName,
       params: functionArgs,
     );
+
+    print(queryResult);
 
     return queryResult;
   }
@@ -189,6 +193,7 @@ class _WalletPageState extends State<WalletPage> {
                     heroTag: 'check_deposits',
                     onPressed: () async {
                       var result = await readContract(getDepositAmount, []);
+                      print(totalDeposits);
                       totalDeposits = result?.first?.toInt();
                       setState(() {});
                     },
