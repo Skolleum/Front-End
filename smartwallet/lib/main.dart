@@ -29,7 +29,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late int _currentIndex = 0;
+  int _currentIndex = 0;
   List<Widget> _pages = [
     WalletPage(),
     TransactionPage(),
