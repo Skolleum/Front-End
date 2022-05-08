@@ -11,10 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  web3dart: ^1.2.3
-  http: ^0.12.2
+  web3dart:
+  http:
   cupertino_icons: ^1.0.0
-  salomon_bottom_bar: ^2.0.1
+  salomon_bottom_bar: ^3.3.0
 
 dev_dependencies:
   flutter_test:

@@ -3,24 +3,17 @@
 <!-- ROADMAP -->
 ## Stack 
   - Flutter + 2.5
-  - Firebase (temporary backend) 
+  - Smart Contracts (https://ethereum.org/en/developers/docs/programming-languages/dart/)
   
 
 ## Roadmap
 
-- [x] Login, Register Pages (FlutterFire Auth)
-- [x] Login, Logout Persistency 
-- [ ] BottomNav:
-  -   Home Page (List of latest market prices.)
-    -   Japanese CandleStick Graphs 
-  -   Market Page
-  -   Additional bottom navigation pages. (may change in future)
- 
--  [ ] DrawerNav:
-     -    Profile Page
-      -    About us 
-      -    Change currency
-      -    Other Settings  
+- [ ] Metamask api : Auth
+- [ ] BottomNav: 
+     -     Wallet status
+      -    Transaction Orders 
+      -    View Historical Transactions
+        
  
 
 

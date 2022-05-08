@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -40,7 +41,7 @@ class _WalletPageState extends State<WalletPage> {
   /// This will construct [credentials] with the provided [privateKey]
   /// and load the Ethereum address in [myAdderess] specified by these credentials.
   String privateKey =
-      '473c356fa5b92a0a9e08b55cf3f4b855818da1d1d25abacef36d31409b928ec0';
+      'e8f063951db71bc399509a82830d4d599d7ce918f9d573fd2d282464545b8ba3';
   Credentials credentials;
   EthereumAddress myAddress;
 
@@ -61,8 +62,6 @@ class _WalletPageState extends State<WalletPage> {
 
     contractAddress =
         EthereumAddress.fromHex(abiJson['networks']['5777']['address']);
-
-    print(contractAddress);
   }
 
   /// This will help us to find all the [public functions] defined by the [contract]
@@ -93,8 +92,6 @@ class _WalletPageState extends State<WalletPage> {
       function: functionName,
       params: functionArgs,
     );
-
-    print(queryResult);
 
     return queryResult;
   }
@@ -162,7 +159,6 @@ class _WalletPageState extends State<WalletPage> {
                     heroTag: 'check_balance',
                     onPressed: () async {
                       var result = await readContract(getBalanceAmount, []);
-                      print(result.length);
                       balance = result?.first?.toInt();
                       setState(() {});
                     },
@@ -193,7 +189,6 @@ class _WalletPageState extends State<WalletPage> {
                     heroTag: 'check_deposits',
                     onPressed: () async {
                       var result = await readContract(getDepositAmount, []);
-                      print(totalDeposits);
                       totalDeposits = result?.first?.toInt();
                       setState(() {});
                     },
