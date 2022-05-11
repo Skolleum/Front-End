@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:smartwallet/constants/string_constants.dart';
 import 'package:web3dart/web3dart.dart';
 
 class WalletPage extends StatefulWidget {
@@ -121,7 +122,7 @@ class _WalletPageState extends State<WalletPage> {
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [Colors.red, Colors.yellow],
+              colors: [Colors.blue, Colors.yellow],
             ),
           ),
           child: Column(
@@ -130,7 +131,7 @@ class _WalletPageState extends State<WalletPage> {
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'SMART CONTRACT',
+                    StringConstants.TITLE_SMART_CONTRACT,
                     style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
@@ -143,7 +144,7 @@ class _WalletPageState extends State<WalletPage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Text(
-                    '₹ $balance',
+                    '£ $balance',
                     style: TextStyle(
                       fontSize: 80,
                       fontWeight: FontWeight.bold,
@@ -162,7 +163,9 @@ class _WalletPageState extends State<WalletPage> {
                       balance = result?.first?.toInt();
                       setState(() {});
                     },
-                    label: Text('Check Balance'),
+                    label: Text(
+                      StringConstants.CHECK_BALANCE,
+                    ),
                     icon: Icon(Icons.refresh),
                     backgroundColor: Colors.pink,
                   ),
