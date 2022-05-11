@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     SmartWalletSharedPref walletSharedPref = SmartWalletSharedPref();
     TextEditingController controller = TextEditingController();
+    bool _validate = false;
 
     return Scaffold(
       body: Column(

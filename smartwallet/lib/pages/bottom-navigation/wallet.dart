@@ -43,14 +43,18 @@ class _WalletPageState extends State<WalletPage> {
 
   /// This will construct [credentials] with the provided [privateKey]
   /// and load the Ethereum address in [myAdderess] specified by these credentials.
-  String privateKey =
-      'e8f063951db71bc399509a82830d4d599d7ce918f9d573fd2d282464545b8ba3';
+  // String privateKey =
+  //     'e8f063951db71bc399509a82830d4d599d7ce918f9d573fd2d282464545b8ba3';
   Credentials credentials;
   EthereumAddress myAddress;
 
   Future<void> getCredentials() async {
-    credentials = await ethClient.credentialsFromPrivateKey(privateKey);
+    String walletPrivateKey =
+        await walletSharedPref.readStringValue("privateKey");
+
+    credentials = await ethClient.credentialsFromPrivateKey(walletPrivateKey);
     myAddress = await credentials.extractAddress();
+    print("WALLET_PRIVATE_KEY___$walletPrivateKey");
   }
 
   /// This will parse an Ethereum address of the contract in [contractAddress]
@@ -131,16 +135,6 @@ class _WalletPageState extends State<WalletPage> {
           ),
           child: Column(
             children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    walletSharedPref.readStringValue("privateKey").then(
-                          (value) => print(value),
-                        );
-                  },
-                  child: Text("Click to see sharedpref"),
-                ),
-              ),
               Expanded(
                 child: Align(
                   alignment: Alignment.center,
