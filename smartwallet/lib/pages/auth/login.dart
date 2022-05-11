@@ -3,6 +3,7 @@ import 'package:smartwallet/constants/string_constants.dart';
 import 'package:smartwallet/pages/home.dart';
 
 import '../../auth_singleton.dart';
+import '../../helper/shared_preferences.dart';
 import '../../widgets/background_widget.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,6 +12,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    SmartWalletSharedPref walletSharedPref = SmartWalletSharedPref();
+    TextEditingController controller = TextEditingController();
 
     return Scaffold(
       body: Column(
@@ -33,6 +36,7 @@ class LoginScreen extends StatelessWidget {
             alignment: Alignment.center,
             margin: EdgeInsets.symmetric(horizontal: 40),
             child: TextField(
+              controller: controller,
               decoration: InputDecoration(
                 labelText: StringConstants.LOGIN_PRIVATE_KEY,
               ),
@@ -62,6 +66,7 @@ class LoginScreen extends StatelessWidget {
             child: RaisedButton(
               onPressed: () {
                 AuthCheck.instance.isLoggedIn == true;
+                walletSharedPref.saveStringValue(controller.text);
                 Navigator.pushReplacementNamed(context, MyHomePage.routeName);
               },
               shape: RoundedRectangleBorder(
@@ -95,7 +100,7 @@ class LoginScreen extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, MyHomePage.routeName),
               },
               child: Text(
-                "Don't Have an Account? Sign up",
+                StringConstants.DONT_HAVE_ACCOUNT,
                 style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,

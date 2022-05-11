@@ -6,6 +6,8 @@ import 'package:http/http.dart';
 import 'package:smartwallet/constants/string_constants.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../helper/shared_preferences.dart';
+
 class WalletPage extends StatefulWidget {
   @override
   _WalletPageState createState() => _WalletPageState();
@@ -113,6 +115,8 @@ class _WalletPageState extends State<WalletPage> {
     );
   }
 
+  SmartWalletSharedPref walletSharedPref = SmartWalletSharedPref();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,6 +131,16 @@ class _WalletPageState extends State<WalletPage> {
           ),
           child: Column(
             children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    walletSharedPref.readStringValue("privateKey").then(
+                          (value) => print(value),
+                        );
+                  },
+                  child: Text("Click to see sharedpref"),
+                ),
+              ),
               Expanded(
                 child: Align(
                   alignment: Alignment.center,
