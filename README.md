@@ -1,27 +1,20 @@
 # Mobile-App
 
-<!-- ROADMAP -->
-## Stack 
-  - Flutter + 2.5
-  - Firebase (temporary backend) 
-  
+## Stack
 
-## Roadmap
+- Flutter + 2.5
+- Truffle
+- Ganache
 
-- [x] Login, Register Pages (FlutterFire Auth)
-- [x] Login, Logout Persistency 
-- [ ] BottomNav:
-  -   Home Page (List of latest market prices.)
-    -   Japanese CandleStick Graphs 
-  -   Market Page
-  -   Additional bottom navigation pages. (may change in future)
- 
--  [ ] DrawerNav:
-     -    Profile Page
-      -    About us 
-      -    Change currency
-      -    Other Settings  
- 
+## How to run
 
+Truffle:
+
+- Open ganache and add truffle.js file to ganache test project.
+- in the project directory run:
+  - truffle compile
+  - truffle migrate
+
+Flutter: - flutter pub get - flutter run
 
 <p align="right">(<a href="#top">back to top</a>)</p>
