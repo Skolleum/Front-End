@@ -20,7 +20,7 @@ class _WalletPageState extends State<WalletPage> {
   Web3Client ethClient;
   // JSON-RPC is a remote procedure call protocol encoded in JSON
   // Remote Procedure Call (RPC) is about executing a block of code on another server
-  String rpcUrl = 'http://0.0.0.0:7545';
+  String rpcUrl = 'http://127.0.0.1:7545';
 
   @override
   void initState() {
