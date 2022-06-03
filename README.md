@@ -2,15 +2,6 @@
 
 ## Stack
 
-- Flutter
-- Smart Contracts (https://ethereum.org/en/developers/docs/programming-languages/dart/)
-- Ganache (https://trufflesuite.com/ganache/)
-
-## Why Ganache?
-- Because Ethereum gas prices are expensive, it's decided Ganache test environment would be the closest exposure to the real web3 transactions on ethereum network.
-- You do not need to pay any amount of money to run this application, only Ganache desktop app should be running simultaneously with Flutter app.
-
-## How to run ganache and flutter together?
 
 - Ganache server must be running and using truffle-config.js
 - in the project folder consequently run: truffle migrate and flutter run
