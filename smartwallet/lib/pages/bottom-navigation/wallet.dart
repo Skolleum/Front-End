@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:smartwallet/constants/asset_constants.dart';
 import 'package:smartwallet/constants/string_constants.dart';
@@ -27,7 +28,7 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
-  int balance = 0, totalDeposits = 0, installmentAmount = 10;
+  int balance = 0, totalDeposits = 0, installmentAmount = 3;
 
   Client httpClient;
   Web3Client ethClient;
@@ -42,7 +43,7 @@ class _WalletPageState extends State<WalletPage> {
   @override
   void initState() {
     list = List<TransactionModel>.filled(1, transactionModel, growable: true);
-
+    balance = 0;
     initialSetup();
     super.initState();
   }
@@ -141,29 +142,83 @@ class _WalletPageState extends State<WalletPage> {
       backgroundColor: Color(0xff161621),
       body: SafeArea(
         child: Container(
+          margin: const EdgeInsets.only(
+            left: 10,
+            right: 10,
+          ),
           color: Color(0xff161621),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               FadeInUp(
                 duration: Duration(milliseconds: 800),
-                child: Text(
-                  "Balance",
-                  style:
-                      TextStyle(color: Colors.blueGrey.shade300, fontSize: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Balance',
+                      style: TextStyle(
+                          color: Colors.blueGrey.shade300, fontSize: 20),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        var result = await readContract(getBalanceAmount, []);
+                        balance = result?.first?.toInt();
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.refresh),
+                      color: Colors.blueGrey.shade200,
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Text(
+                      'Deposit',
+                      style: TextStyle(
+                          color: Colors.blueGrey.shade300, fontSize: 20),
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        var result = await readContract(getDepositAmount, []);
+                        totalDeposits = result?.first?.toInt();
+                        setState(() {});
+                      },
+                      icon: Icon(Icons.refresh),
+                      color: Colors.blueGrey.shade200,
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
                 height: 10,
               ),
-              FadeInUp(
-                duration: Duration(milliseconds: 800),
-                child: Text(
-                  "\$ 12,500.00",
-                  style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FadeInUp(
+                    duration: Duration(milliseconds: 800),
+                    child: Text(
+                      "\$ $balance",
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  FadeInUp(
+                    duration: Duration(milliseconds: 800),
+                    child: Text(
+                      "\$ $totalDeposits",
+                      style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
               FadeInUp(
                 duration: Duration(milliseconds: 1000),
@@ -178,136 +233,108 @@ class _WalletPageState extends State<WalletPage> {
                   ),
                 ),
               ),
-
-              // show balance
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    '£ $balance',
-                    style: TextStyle(
-                      fontSize: 80,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              // update balance
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: FloatingActionButton.extended(
-                    heroTag: 'check_balance',
-                    onPressed: () async {
-                      var result = await readContract(getBalanceAmount, []);
-                      balance = result?.first?.toInt();
-                      setState(() {});
-                    },
-                    label: Text(
-                      StringConstants.CHECK_BALANCE,
-                    ),
-                    icon: Icon(Icons.refresh),
-                    backgroundColor: Colors.pink,
-                  ),
-                ),
-              ),
-              // show deposits
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    '£ $totalDeposits',
-                    style: TextStyle(
-                      fontSize: 80,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              // update deposits
-              Expanded(
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: FloatingActionButton.extended(
-                    heroTag: 'check_deposits',
-                    onPressed: () async {
-                      var result = await readContract(getDepositAmount, []);
-                      totalDeposits = result?.first?.toInt();
-                      setState(() {});
-                    },
-                    label: Text('Check Deposits'),
-                    icon: Icon(Icons.refresh),
-                    backgroundColor: Colors.pink,
-                  ),
-                ),
-              ),
-              // deposit amount
-              Expanded(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    height: 100,
-                    width: 250,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: FloatingActionButton.extended(
-                        heroTag: 'deposit_amount',
-                        onPressed: () async {
-                          await writeContract(addDepositAmount,
-                              [BigInt.from(installmentAmount)]);
-                        },
-                        label: Text('Deposit £ 3'),
-                        icon: Icon(Icons.add_circle),
-                        backgroundColor: Colors.green,
+              FadeInUp(
+                duration: Duration(milliseconds: 1000),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    MaterialButton(
+                      onPressed: () {
+                        () async {
+                          await writeContract(
+                            addDepositAmount,
+                            [BigInt.from(installmentAmount)],
+                          );
+                        };
+                      },
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      color: Color(0xff02d39a).withOpacity(0.7),
+                      child: Expanded(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.wallet,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Deposit",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              // withdraw balance
-              Expanded(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    height: 100,
-                    width: 350,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: FloatingActionButton.extended(
-                        heroTag: 'withdraw_balance',
-                        onPressed: () async {
-                          await writeContract(withdrawBalance, []);
-                        },
-                        label: Text('Withdraw Balance'),
-                        icon: Icon(Icons.remove_circle),
-                        backgroundColor: Colors.red,
-                      ),
+                    SizedBox(
+                      width: 20,
                     ),
-                  ),
+                    MaterialButton(
+                      onPressed: () async {
+                        await writeContract(withdrawBalance, []);
+                      },
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: Color.fromARGB(255, 211, 33, 2)
+                                  .withOpacity(0.4),
+                              width: 1),
+                          borderRadius: BorderRadius.circular(10)),
+                      splashColor:
+                          Color.fromARGB(255, 211, 26, 2).withOpacity(0.4),
+                      highlightColor:
+                          Color.fromARGB(255, 211, 30, 2).withOpacity(0.4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
+                      color: Colors.transparent,
+                      elevation: 0,
+                      child: Expanded(
+                        child: Row(
+                          children: [
+                            Icon(
+                              Iconsax.arrow_3,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "Withdraw",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
-
               Expanded(
-                  child: ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return (ListTile(
-                    tileColor: Colors.white,
-                    hoverColor: Colors.grey,
-                    leading: list[index].name == "PAID"
-                        ? Icon(Icons.call_made_outlined)
-                        : Icon(Icons.call_received_outlined),
-                    title: Text(list[index].name),
-                    subtitle: Column(children: [
-                      Text('\u{20B9}${list[index].amount}'),
-                      Text("Token Hash :" +
-                          '${list[index].hash.substring(0, 7)}')
-                    ]),
-                    onTap: () => print("ListTile"),
-                    trailing: Text('${list[index].timestamp}'),
-                  ));
-                },
-              ))
+                child: ListView.builder(
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return (ListTile(
+                      textColor: Colors.white,
+                      tileColor: Colors.white,
+                      hoverColor: Colors.grey,
+                      leading: list[index].name == "PAID"
+                          ? Icon(Icons.call_made_outlined)
+                          : Icon(Icons.call_received_outlined),
+                      title: Text(list[index].name),
+                      subtitle: Column(children: [
+                        Text('\u{20B9}${list[index].amount}'),
+                        Text("Token Hash :" +
+                            '${list[index].hash.substring(0, 7)}')
+                      ]),
+                      onTap: () => print("ListTile"),
+                      trailing: Text('${list[index].timestamp}'),
+                    ));
+                  },
+                ),
+              ),
             ],
           ),
         ),
