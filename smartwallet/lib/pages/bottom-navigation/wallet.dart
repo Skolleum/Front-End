@@ -1,12 +1,25 @@
 import 'dart:convert';
 
+import 'package:animate_do/animate_do.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
+import 'package:smartwallet/constants/asset_constants.dart';
 import 'package:smartwallet/constants/string_constants.dart';
+import 'package:smartwallet/model/Transaction.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../helper/shared_preferences.dart';
+import '../../model/linechart_model.dart';
+
+TransactionModel transactionModel = TransactionModel(
+  'PAID',
+  '0xAE123213',
+  '10',
+  DateFormat.jm().format(DateTime.now()),
+);
 
 class WalletPage extends StatefulWidget {
   @override
@@ -14,26 +27,33 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> {
-  int balance = 0, totalDeposits = 0, installmentAmount = 3;
+  int balance = 0, totalDeposits = 0, installmentAmount = 10;
 
   Client httpClient;
   Web3Client ethClient;
-  // JSON-RPC is a remote procedure call protocol encoded in JSON
-  // Remote Procedure Call (RPC) is about executing a block of code on another server
-  String rpcUrl = 'http://127.0.0.1:7545';
+// JSON-RPC is a JSON-encoded remote procedure dispatch protocol.
+//  Remote Procedure Call (RPC) focuses on “ running a piece of code on some other server.
+
+  String rpcUrl = StringConstants.RPC_URL;
+
+  List<TransactionModel> list =
+      List<TransactionModel>.filled(1, transactionModel, growable: true);
 
   @override
   void initState() {
+    list = List<TransactionModel>.filled(1, transactionModel, growable: true);
+
     initialSetup();
     super.initState();
   }
 
   Future<void> initialSetup() async {
-    /// This will start a client that connects to a JSON RPC API, available at RPC URL.
-    /// The httpClient will be used to send requests to the [RPC server].
+    /// This will launch a client that connects to the RPC URL's JSON RPC API.
+    ///Requests will be sent to the [RPC server] using the httpClient.
+
     httpClient = Client();
 
-    /// It connects to an Ethereum [node] to send transactions, interact with smart contracts, and much more!
+    ///It opens a connection to Eth to send transactions and interact with smart contracts.
     ethClient = Web3Client(rpcUrl, httpClient);
 
     await getCredentials();
@@ -41,10 +61,8 @@ class _WalletPageState extends State<WalletPage> {
     await getContractFunctions();
   }
 
-  /// This will construct [credentials] with the provided [privateKey]
-  /// and load the Ethereum address in [myAdderess] specified by these credentials.
-  // String privateKey =
-  //     'e8f063951db71bc399509a82830d4d599d7ce918f9d573fd2d282464545b8ba3';
+  /// This will generate [credentials] using the supplied [privateKey] and
+  /// load the Ethereum address given by these credentials.
   Credentials credentials;
   EthereumAddress myAddress;
 
@@ -57,13 +75,13 @@ class _WalletPageState extends State<WalletPage> {
     print("WALLET_PRIVATE_KEY___$walletPrivateKey");
   }
 
-  /// This will parse an Ethereum address of the contract in [contractAddress]
-  /// from the hexadecimal representation present inside the [ABI]
+  /// This will execute a [functionName] using the arguments [functionArgs] provided in the [contract] and output the result.
   String abi;
   EthereumAddress contractAddress;
 
   Future<void> getDeployedContract() async {
-    String abiString = await rootBundle.loadString('src/abis/Investment.json');
+    String abiString =
+        await rootBundle.loadString(AssetConstants.JSON_CONTRACT);
     var abiJson = jsonDecode(abiString);
     abi = jsonEncode(abiJson['abi']);
 
@@ -71,7 +89,7 @@ class _WalletPageState extends State<WalletPage> {
         EthereumAddress.fromHex(abiJson['networks']['5777']['address']);
   }
 
-  /// This will help us to find all the [public functions] defined by the [contract]
+  ///Signs the given transaction with the keys provided in the [credentials] item before uploading it to the client for execution.
   DeployedContract contract;
   ContractFunction getBalanceAmount,
       getDepositAmount,
@@ -88,8 +106,6 @@ class _WalletPageState extends State<WalletPage> {
     withdrawBalance = contract.function('withdrawBalance');
   }
 
-  /// This will call a [functionName] with [functionArgs] as parameters
-  /// defined in the [contract] and returns its result
   Future<List<dynamic>> readContract(
     ContractFunction functionName,
     List<dynamic> functionArgs,
@@ -103,8 +119,6 @@ class _WalletPageState extends State<WalletPage> {
     return queryResult;
   }
 
-  /// Signs the given transaction using the keys supplied in the [credentials] object
-  /// to upload it to the client so that it can be executed
   Future<void> writeContract(
     ContractFunction functionName,
     List<dynamic> functionArgs,
@@ -124,29 +138,47 @@ class _WalletPageState extends State<WalletPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff161621),
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [Colors.blue, Colors.yellow],
-            ),
-          ),
+          color: Color(0xff161621),
           child: Column(
             children: [
-              Expanded(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    StringConstants.TITLE_SMART_CONTRACT,
-                    style: TextStyle(
-                      fontSize: 30,
+              FadeInUp(
+                duration: Duration(milliseconds: 800),
+                child: Text(
+                  "Balance",
+                  style:
+                      TextStyle(color: Colors.blueGrey.shade300, fontSize: 20),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              FadeInUp(
+                duration: Duration(milliseconds: 800),
+                child: Text(
+                  "\$ 12,500.00",
+                  style: TextStyle(
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
-                    ),
+                      color: Colors.white),
+                ),
+              ),
+              FadeInUp(
+                duration: Duration(milliseconds: 1000),
+                child: Container(
+                  width: double.infinity,
+                  height: 250,
+                  child: LineChart(
+                    lineChartModel(),
+                    swapAnimationDuration:
+                        Duration(milliseconds: 1000), // Optional
+                    swapAnimationCurve: Curves.linear, // Optional
                   ),
                 ),
               ),
+
               // show balance
               Expanded(
                 child: Align(
@@ -184,7 +216,7 @@ class _WalletPageState extends State<WalletPage> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Text(
-                    '₹ $totalDeposits',
+                    '£ $totalDeposits',
                     style: TextStyle(
                       fontSize: 80,
                       fontWeight: FontWeight.bold,
@@ -224,7 +256,7 @@ class _WalletPageState extends State<WalletPage> {
                           await writeContract(addDepositAmount,
                               [BigInt.from(installmentAmount)]);
                         },
-                        label: Text('Deposit ₹ 3'),
+                        label: Text('Deposit £ 3'),
                         icon: Icon(Icons.add_circle),
                         backgroundColor: Colors.green,
                       ),
@@ -254,6 +286,28 @@ class _WalletPageState extends State<WalletPage> {
                   ),
                 ),
               ),
+
+              Expanded(
+                  child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return (ListTile(
+                    tileColor: Colors.white,
+                    hoverColor: Colors.grey,
+                    leading: list[index].name == "PAID"
+                        ? Icon(Icons.call_made_outlined)
+                        : Icon(Icons.call_received_outlined),
+                    title: Text(list[index].name),
+                    subtitle: Column(children: [
+                      Text('\u{20B9}${list[index].amount}'),
+                      Text("Token Hash :" +
+                          '${list[index].hash.substring(0, 7)}')
+                    ]),
+                    onTap: () => print("ListTile"),
+                    trailing: Text('${list[index].timestamp}'),
+                  ));
+                },
+              ))
             ],
           ),
         ),

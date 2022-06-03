@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class TransactionPage extends StatelessWidget {
+class PricePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("TransactionPage"),
+      child: Text("Today's Value"),
     );
   }
 }

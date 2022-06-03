@@ -1,4 +1,4 @@
-class Transaction {
+class TransactionModel {
   // static Transaction instance = Transaction._init();
   // Transaction._init();
 
@@ -7,7 +7,7 @@ class Transaction {
   String amount;
   String timestamp;
 
-  TransactionsData(name, hash, amount, timestamp) {
+  TransactionModel(name, hash, amount, timestamp) {
     this.name = name;
     this.hash = hash;
     this.amount = amount;

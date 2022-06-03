@@ -4,7 +4,7 @@ import 'package:smartwallet/auth_singleton.dart';
 import 'package:smartwallet/pages/auth/login.dart';
 import 'package:smartwallet/pages/bottom-navigation/historical.dart';
 import 'package:smartwallet/pages/bottom-navigation/settings.dart';
-import 'package:smartwallet/pages/bottom-navigation/transactions.dart';
+import 'package:smartwallet/pages/bottom-navigation/prices.dart';
 import 'package:smartwallet/pages/bottom-navigation/wallet.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   List<Widget> _pages = [
     WalletPage(),
-    TransactionPage(),
+    PricePage(),
     HistoricalPage(),
     SettingsPage(),
   ];
