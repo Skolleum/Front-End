@@ -21,10 +21,8 @@ class PricePageState extends State<PricePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getCrypto();
-    //print(_postList.length.toString());
   }
 
   void getCrypto() async {
@@ -108,7 +106,8 @@ class PricePageState extends State<PricePage> {
                               trailing: Text(
                                 "${snapshot.elementAt(index).currentPrice}",
                                 style: TextStyle(
-                                    color: Colors.green, fontSize: 15),
+                                    color: Color.fromARGB(255, 16, 37, 111),
+                                    fontSize: 15),
                               ),
                               title: Text(
                                 "${snapshot.elementAt(index).name}",

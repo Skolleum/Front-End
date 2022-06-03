@@ -32,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Scaffold _buildAuthenticatedPages() {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 166, 198, 211),
       body: _pages[_currentIndex],
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
@@ -40,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
           SalomonBottomBarItem(
             icon: Icon(Icons.wallet_travel),
             title: Text("Wallet"),
-            selectedColor: Colors.purple,
+            selectedColor: Color.fromARGB(255, 67, 137, 124),
           ),
           SalomonBottomBarItem(
             icon: Icon(Icons.auto_graph),
@@ -50,12 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
           SalomonBottomBarItem(
             icon: Icon(Icons.history),
             title: Text("Historical"),
-            selectedColor: Colors.orange,
+            selectedColor: Color.fromARGB(255, 118, 72, 4),
           ),
           SalomonBottomBarItem(
             icon: Icon(Icons.settings),
             title: Text("Settings"),
-            selectedColor: Colors.teal,
+            selectedColor: Color.fromARGB(255, 65, 73, 72),
           ),
         ],
       ),
