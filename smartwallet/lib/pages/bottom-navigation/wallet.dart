@@ -18,7 +18,7 @@ import '../../model/linechart_model.dart';
 TransactionModel transactionModel = TransactionModel(
   'PAID',
   '0xAE123213',
-  '10',
+  '260',
   DateFormat.jm().format(DateTime.now()),
 );
 
@@ -239,35 +239,33 @@ class _WalletPageState extends State<WalletPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     MaterialButton(
-                      onPressed: () {
-                        () async {
-                          await writeContract(
-                            addDepositAmount,
-                            [BigInt.from(installmentAmount)],
-                          );
-                        };
+                      onPressed: () async {
+                        await writeContract(
+                          addDepositAmount,
+                          [
+                            BigInt.from(installmentAmount),
+                          ],
+                        );
                       },
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       color: Color(0xff02d39a).withOpacity(0.7),
-                      child: Expanded(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Iconsax.wallet,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Deposit",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Iconsax.wallet,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Deposit",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -275,7 +273,10 @@ class _WalletPageState extends State<WalletPage> {
                     ),
                     MaterialButton(
                       onPressed: () async {
-                        await writeContract(withdrawBalance, []);
+                        await writeContract(
+                          withdrawBalance,
+                          [],
+                        );
                       },
                       shape: RoundedRectangleBorder(
                           side: BorderSide(
@@ -291,26 +292,37 @@ class _WalletPageState extends State<WalletPage> {
                           horizontal: 30, vertical: 15),
                       color: Colors.transparent,
                       elevation: 0,
-                      child: Expanded(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Iconsax.arrow_3,
-                              color: Colors.white,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              "Withdraw",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Iconsax.money_remove,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Withdraw",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
                       ),
                     )
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              FadeInUp(
+                  duration: Duration(milliseconds: 1000),
+                  child: Text(
+                    "Recent Transactions",
+                    style: TextStyle(
+                        color: Colors.blueGrey.shade300, fontSize: 16),
+                  )),
+              SizedBox(
+                height: 20,
               ),
               Expanded(
                 child: ListView.builder(
@@ -321,14 +333,19 @@ class _WalletPageState extends State<WalletPage> {
                       tileColor: Colors.white,
                       hoverColor: Colors.grey,
                       leading: list[index].name == "PAID"
-                          ? Icon(Icons.call_made_outlined)
-                          : Icon(Icons.call_received_outlined),
-                      title: Text(list[index].name),
-                      subtitle: Column(children: [
-                        Text('\u{20B9}${list[index].amount}'),
-                        Text("Token Hash :" +
-                            '${list[index].hash.substring(0, 7)}')
-                      ]),
+                          ? Icon(
+                              Icons.call_made_outlined,
+                              color: Colors.red,
+                            )
+                          : Icon(Icons.call_received_outlined,
+                              color: Colors.red),
+                      title: Row(
+                        children: [
+                          Text(list[index].name),
+                          SizedBox(width: 60),
+                          Text('\$ ${list[index].amount}')
+                        ],
+                      ),
                       onTap: () => print("ListTile"),
                       trailing: Text('${list[index].timestamp}'),
                     ));

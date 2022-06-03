@@ -43,8 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
             selectedColor: Colors.purple,
           ),
           SalomonBottomBarItem(
-            icon: Icon(Icons.send),
-            title: Text("Transactions"),
+            icon: Icon(Icons.auto_graph),
+            title: Text("Prices"),
             selectedColor: Colors.pink,
           ),
           SalomonBottomBarItem(
